@@ -17,8 +17,8 @@ package Dist::Zilla::Plugin::TemplateCJM;
 # ABSTRACT: Process templates, including version numbers & changes
 #---------------------------------------------------------------------
 
-our $VERSION = '4.20';
-# This file is part of Dist-Zilla-Plugin-TemplateCJM 4.20 (August 17, 2013)
+our $VERSION = '4.21';
+# This file is part of Dist-Zilla-Plugin-TemplateCJM 4.21 (September 7, 2013)
 
 
 use Moose;
@@ -218,6 +218,7 @@ sub check_Changes
 
   $self->_release_date($release_date); # Remember it for before_release
 
+  # Try to parse the release date:
   require DateTime::Format::Natural;
 
   my $parser = DateTime::Format::Natural->new(
@@ -225,7 +226,16 @@ sub check_Changes
     time_zone => 'local',
   );
 
-  my $release_datetime = $parser->parse_datetime($release_date);
+  # If the date is YYYY-MM-DD with optional time,
+  # you may have a release note after the date.
+  my $release_datetime = $parser->parse_datetime(
+    $release_date =~ m{
+      ^ ( \d{4}-\d\d-\d\d
+          (?: \s \d\d:\d\d (?: :\d\d)? )?
+        ) \b
+    }x ? "$1" : $release_date
+  );
+
   if ($parser->success) {
     $self->_release_datetime($release_datetime); # Remember it for before_release
   } else {
@@ -237,6 +247,7 @@ sub check_Changes
     $release_date = $release_datetime->format_cldr($self->date_format);
   }
 
+  # Return the results:
   chomp $text;
 
   $self->log("Version $version released $release_date");
@@ -441,8 +452,8 @@ Dist::Zilla::Plugin::TemplateCJM - Process templates, including version numbers 
 
 =head1 VERSION
 
-This document describes version 4.20 of
-Dist::Zilla::Plugin::TemplateCJM, released August 17, 2013.
+This document describes version 4.21 of
+Dist::Zilla::Plugin::TemplateCJM, released September 7, 2013.
 
 =head1 SYNOPSIS
 

@@ -1,4 +1,4 @@
-Dist::Zilla::Plugin::TemplateCJM version 4.20, released August 17, 2013
+Dist::Zilla::Plugin::TemplateCJM version 4.21, released September 7, 2013
 
 
 Dist::Zilla::Plugin::TemplateCJM is a plugin I've written for
@@ -35,11 +35,10 @@ DEPENDENCIES
 
 
 CHANGES
-    Here's what's new in version 4.20 of Dist::Zilla::Plugin::TemplateCJM:
+    Here's what's new in version 4.21 of Dist::Zilla::Plugin::TemplateCJM:
     (See the file "Changes" for the full revision history.)
 
-	- now a separate distribution from Dist-Zilla-Plugins-CJM
-	- can now reformat date from Changes (add date_format parameter)
+	- now allows release note if date conforms to CPAN::Changes::Spec
 
 
 

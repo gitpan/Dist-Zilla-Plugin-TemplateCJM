@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::More 0.88 tests => 21; # done_testing
+use Test::More 0.88 tests => 28; # done_testing
 
 use Test::DZil 'Builder';
 
@@ -78,7 +78,7 @@ sub make_re
   like(
     $readme,
     qr{\A\QDZT-Sample version 0.04, released March 29, 2010\E\n},
-    "first line of README",
+    "English date first line of README",
   );
 
   my $expected_depends = <<'END DEPEND';
@@ -92,7 +92,7 @@ DEPENDENCIES
   Foo::Bar   1.00
 END DEPEND
 
-  like($readme, make_re($expected_depends), "DEPENDENCIES in README");
+  like($readme, make_re($expected_depends), "English date DEPENDENCIES in README");
 
   my $expected_changes = <<'END CHANGES';
 CHANGES
@@ -105,7 +105,7 @@ CHANGES
 
 END CHANGES
 
-  like($readme, make_re($expected_changes), "CHANGES in README");
+  like($readme, make_re($expected_changes), "English date CHANGES in README");
 
   undef $readme;
 
@@ -114,20 +114,20 @@ END CHANGES
   like(
     $module,
     qr{^\Q# This file is part of DZT-Sample 0.04 (March 29, 2010)\E\n}m,
-    'comment in module',
+    'English date comment in module',
   );
 
   like(
     $module,
     qr{^\Q# This { {comment}} should be unchanged.\E\n}m,
-    'unchanged comment in module',
+    'English date unchanged comment in module',
   );
 
   like(
     $module,
     make_re("DZT::Sample requires L<Bloofle> and\n".
             "L<Foo::Bar> (1.00 or later).\n"),
-    'POD in module',
+    'English date POD in module',
   );
 
   my $manual = $tzil->slurp_file('build/lib/DZT/Manual.pod');
@@ -135,7 +135,7 @@ END CHANGES
   like(
     $manual,
     qr{^\QThis document (DZT::Manual) describes DZT-Sample 0.04.\E\n}m,
-    'VERSION in manual',
+    'English date VERSION in manual',
   );
 }
 
@@ -161,7 +161,7 @@ END CHANGES
   like(
     $readme,
     qr{\A\QDZT-Sample version 0.04, released 2010-03-29\E\n},
-    "first line of README",
+    "spec date first line of README",
   );
 
   my $expected_depends = <<'END DEPEND';
@@ -175,7 +175,7 @@ DEPENDENCIES
   Foo::Bar   1.00
 END DEPEND
 
-  like($readme, make_re($expected_depends), "DEPENDENCIES in README");
+  like($readme, make_re($expected_depends), "spec date DEPENDENCIES in README");
 
   my $expected_changes = <<'END CHANGES';
 CHANGES
@@ -188,7 +188,7 @@ CHANGES
 
 END CHANGES
 
-  like($readme, make_re($expected_changes), "CHANGES in README");
+  like($readme, make_re($expected_changes), "spec date CHANGES in README");
 
   undef $readme;
 
@@ -197,20 +197,20 @@ END CHANGES
   like(
     $module,
     qr{^\Q# This file is part of DZT-Sample 0.04 (2010-03-29)\E\n}m,
-    'comment in module',
+    'spec date comment in module',
   );
 
   like(
     $module,
     qr{^\Q# This { {comment}} should be unchanged.\E\n}m,
-    'unchanged comment in module',
+    'spec date unchanged comment in module',
   );
 
   like(
     $module,
     make_re("DZT::Sample requires L<Bloofle> and\n".
             "L<Foo::Bar> (1.00 or later).\n"),
-    'POD in module',
+    'spec date POD in module',
   );
 
   my $manual = $tzil->slurp_file('build/lib/DZT/Manual.pod');
@@ -218,7 +218,7 @@ END CHANGES
   like(
     $manual,
     qr{^\QThis document (DZT::Manual) describes DZT-Sample 0.04.\E\n}m,
-    'VERSION in manual',
+    'spec date VERSION in manual',
   );
 }
 
@@ -245,7 +245,7 @@ END CHANGES
   like(
     $readme,
     qr{\A\QDZT-Sample version 0.04, released March 29, 2010\E\n},
-    "first line of README",
+    "reformatted date first line of README",
   );
 
   my $expected_depends = <<'END DEPEND';
@@ -259,7 +259,7 @@ DEPENDENCIES
   Foo::Bar   1.00
 END DEPEND
 
-  like($readme, make_re($expected_depends), "DEPENDENCIES in README");
+  like($readme, make_re($expected_depends), "reformatted date DEPENDENCIES in README");
 
   my $expected_changes = <<'END CHANGES';
 CHANGES
@@ -272,7 +272,7 @@ CHANGES
 
 END CHANGES
 
-  like($readme, make_re($expected_changes), "CHANGES in README");
+  like($readme, make_re($expected_changes), "reformatted date CHANGES in README");
 
   undef $readme;
 
@@ -281,20 +281,20 @@ END CHANGES
   like(
     $module,
     qr{^\Q# This file is part of DZT-Sample 0.04 (March 29, 2010)\E\n}m,
-    'comment in module',
+    'reformatted date comment in module',
   );
 
   like(
     $module,
     qr{^\Q# This { {comment}} should be unchanged.\E\n}m,
-    'unchanged comment in module',
+    'reformatted date unchanged comment in module',
   );
 
   like(
     $module,
     make_re("DZT::Sample requires L<Bloofle> and\n".
             "L<Foo::Bar> (1.00 or later).\n"),
-    'POD in module',
+    'reformatted date POD in module',
   );
 
   my $manual = $tzil->slurp_file('build/lib/DZT/Manual.pod');
@@ -302,7 +302,94 @@ END CHANGES
   like(
     $manual,
     qr{^\QThis document (DZT::Manual) describes DZT-Sample 0.04.\E\n}m,
-    'VERSION in manual',
+    'reformatted date VERSION in manual',
+  );
+}
+
+#---------------------------------------------------------------------
+{
+  my $tzil = Builder->from_config(
+    { dist_root => 'corpus/DZT' },
+    {
+      add_files => {
+        'source/dist.ini' => make_ini(
+          '0.04',
+          '[GatherDir]',
+          '[TemplateCJM]',
+          'date_format = MMMM d, y',
+        ),
+        'source/Changes' => make_changes('2010-03-29 release note 4',
+                                         '2010-03-15 release note 3',
+                                         '2010-03-07 release note 2',
+                                         '2009-10-11 release note 1'),
+      },
+    },
+  );
+
+  $tzil->build;
+
+  my $readme = $tzil->slurp_file('build/README');
+  like(
+    $readme,
+    qr{\A\QDZT-Sample version 0.04, released March 29, 2010\E\n},
+    "release note first line of README",
+  );
+
+  my $expected_depends = <<'END DEPEND';
+DEPENDENCIES
+
+  Package   Minimum Version
+  --------- ---------------
+  perl       5.8.0
+  Baz        1.2.3
+  Bloofle
+  Foo::Bar   1.00
+END DEPEND
+
+  like($readme, make_re($expected_depends), "release note DEPENDENCIES in README");
+
+  my $expected_changes = <<'END CHANGES';
+CHANGES
+    Here's what's new in version 0.04 of DZT-Sample:
+    (See the file "Changes" for the full revision history.)
+
+	- What happened in release 4
+
+
+
+END CHANGES
+
+  like($readme, make_re($expected_changes), "release note CHANGES in README");
+
+  undef $readme;
+
+  my $module = $tzil->slurp_file('build/lib/DZT/Sample.pm');
+
+  like(
+    $module,
+    qr{^\Q# This file is part of DZT-Sample 0.04 (March 29, 2010)\E\n}m,
+    'release note comment in module',
+  );
+
+  like(
+    $module,
+    qr{^\Q# This { {comment}} should be unchanged.\E\n}m,
+    'release note unchanged comment in module',
+  );
+
+  like(
+    $module,
+    make_re("DZT::Sample requires L<Bloofle> and\n".
+            "L<Foo::Bar> (1.00 or later).\n"),
+    'release note POD in module',
+  );
+
+  my $manual = $tzil->slurp_file('build/lib/DZT/Manual.pod');
+
+  like(
+    $manual,
+    qr{^\QThis document (DZT::Manual) describes DZT-Sample 0.04.\E\n}m,
+    'release note VERSION in manual',
   );
 }
 

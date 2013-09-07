@@ -28,7 +28,7 @@ requires:
   version: 0.77
 resources:
   repository: git://github.com/madsen/dist-zilla-plugin-templatecjm.git
-version: 4.20
+version: 4.21
 x_Dist_Zilla:
   perl:
     version: 5.014002
@@ -64,7 +64,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::PrereqsFromMeta
       name: CJM/Test::PrereqsFromMeta
-      version: 4.04
+      version: 4.20
     -
       class: Dist::Zilla::Plugin::PodSyntaxTests
       name: CJM/PodSyntaxTests
@@ -110,7 +110,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::TemplateCJM
       name: CJM/TemplateCJM
-      version: 4.20
+      version: 4.21
     -
       class: Dist::Zilla::Plugin::Repository
       name: CJM/Repository
