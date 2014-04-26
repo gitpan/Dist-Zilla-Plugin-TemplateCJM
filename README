@@ -1,4 +1,4 @@
-Dist::Zilla::Plugin::TemplateCJM version 4.21, released September 7, 2013
+Dist::Zilla::Plugin::TemplateCJM version 4.22, released April 26, 2014
 
 
 Dist::Zilla::Plugin::TemplateCJM is a plugin I've written for
@@ -35,16 +35,16 @@ DEPENDENCIES
 
 
 CHANGES
-    Here's what's new in version 4.21 of Dist::Zilla::Plugin::TemplateCJM:
+    Here's what's new in version 4.22 of Dist::Zilla::Plugin::TemplateCJM:
     (See the file "Changes" for the full revision history.)
 
-	- now allows release note if date conforms to CPAN::Changes::Spec
+	- can now handle non-ASCII Changes file with Dist::Zilla 5
 
 
 
 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Christopher J. Madsen.
+This software is copyright (c) 2014 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

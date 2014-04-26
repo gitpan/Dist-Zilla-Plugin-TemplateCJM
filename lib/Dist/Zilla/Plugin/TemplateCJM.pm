@@ -17,8 +17,8 @@ package Dist::Zilla::Plugin::TemplateCJM;
 # ABSTRACT: Process templates, including version numbers & changes
 #---------------------------------------------------------------------
 
-our $VERSION = '4.21';
-# This file is part of Dist-Zilla-Plugin-TemplateCJM 4.21 (September 7, 2013)
+our $VERSION = '4.22';
+# This file is part of Dist-Zilla-Plugin-TemplateCJM 4.22 (April 26, 2014)
 
 
 use Moose;
@@ -187,21 +187,23 @@ sub check_Changes
   my $list_releases = $self->changes;
 
   # Read the Changes file and find the line for dist_version:
-  open(my $Changes, '<', \$changesFile->content) or die;
+  my $changelog = $changesFile->content;
 
   my ($release_date, $text);
 
   my $re = $self->changelog_re;
 
-  while (<$Changes>) {
-    if (/^$re/) {
+  while ($changelog =~ m/(.*\n)/g) {
+    my $line = $1;
+    if ($line =~ /^$re/) {
       die "ERROR: $file begins with version $1, expected version $version"
           unless $1 eq $version;
       $release_date = $2;
       $text = '';
-      while (<$Changes>) {
-        last if /^\S/ and --$list_releases <= 0;
-        $text .= $_;
+      while ($changelog =~ m/(.*\n)/g) {
+        $line = $1;
+        last if $line =~ /^\S/ and --$list_releases <= 0;
+        $text .= $line;
       }
       $text =~ s/\A\s*\n//;     # Remove leading blank lines
       $text =~ s/\s*\z/\n/;     # Normalize trailing whitespace
@@ -211,7 +213,7 @@ sub check_Changes
     } # end if found the first version in Changes
   } # end while more lines in Changes
 
-  close $Changes;
+  undef $changelog;
 
   # Report the results:
   die "ERROR: Can't find any versions in $file" unless $release_date;
@@ -452,8 +454,8 @@ Dist::Zilla::Plugin::TemplateCJM - Process templates, including version numbers 
 
 =head1 VERSION
 
-This document describes version 4.21 of
-Dist::Zilla::Plugin::TemplateCJM, released September 7, 2013.
+This document describes version 4.22 of
+Dist::Zilla::Plugin::TemplateCJM, released April 26, 2014.
 
 =head1 SYNOPSIS
 
@@ -729,11 +731,11 @@ or through the web interface at
 L<< http://rt.cpan.org/Public/Bug/Report.html?Queue=Dist-Zilla-Plugin-TemplateCJM >>.
 
 You can follow or contribute to Dist-Zilla-Plugin-TemplateCJM's development at
-L<< http://github.com/madsen/dist-zilla-plugin-templatecjm >>.
+L<< https://github.com/madsen/dist-zilla-plugin-templatecjm >>.
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Christopher J. Madsen.
+This software is copyright (c) 2014 by Christopher J. Madsen.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
